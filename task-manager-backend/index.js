@@ -7,6 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+console.log("我是来捣乱的。")
+
 // 连接 MongoDB（替换为你的 MongoDB URI）
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost/task-manager", {
