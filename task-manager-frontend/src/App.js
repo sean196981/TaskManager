@@ -48,11 +48,18 @@ function App() {
         />
         <button type="submit">添加任务</button>
       </form>
-      <ul>
+      <ul style={{ listStyleType: "none", padding: 0 }}>
         {tasks.map((task) => (
-          <li key={task._id}>
+          <li
+            key={task._id}
+            style={{
+              margin: "10px 0",
+              border: "1px solid #ccc",
+              padding: "10px",
+            }}
+          >
             {task.title} - {task.completed ? "已完成" : "未完成"}
-            <button onClick={() => handleDeleteTask(task._id)}>删除</button>
+            {/* <button onClick={() => handleDeleteTask(task._id)}>删除</button> */}
           </li>
         ))}
       </ul>
