@@ -16,6 +16,19 @@ mongoose
   .then(() => console.log("MongoDB 连接成功"))
   .catch((err) => console.error("MongoDB 连接失败:", err));
 
+// 在 mongoose.connect 之后添加
+const initData = async () => {
+  const count = await Task.countDocuments();
+  if (count === 0) {
+    await Task.insertMany([
+      { title: "学习 Git", completed: false },
+      { title: "完成任务管理项目", completed: false },
+    ]);
+    console.log("初始任务已添加");
+  }
+};
+initData();
+
 // 定义任务模型
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true },
