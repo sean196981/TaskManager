@@ -3,18 +3,41 @@ import axios from "axios";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
-    // 获取任务列表
     axios
       .get("http://localhost:5000/api/tasks")
       .then((res) => setTasks(res.data))
       .catch((err) => console.error("获取任务失败:", err));
   }, []);
 
+  const handleAddTask = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:5000/api/tasks", {
+        title,
+      });
+      setTasks([...tasks, res.data]);
+      setTitle("");
+    } catch (err) {
+      console.error("添加任务失败:", err);
+    }
+  };
+
   return (
     <div>
       <h1>任务管理</h1>
+      <form onSubmit={handleAddTask}>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="输入任务标题"
+          required
+        />
+        <button type="submit">添加任务</button>
+      </form>
       <ul>
         {tasks.map((task) => (
           <li key={task._id}>
