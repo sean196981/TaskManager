@@ -25,6 +25,16 @@ function App() {
     }
   };
 
+  // 在 handleAddTask 之后添加
+  const handleDeleteTask = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+      setTasks(tasks.filter((task) => task._id !== id));
+    } catch (err) {
+      console.error("删除任务失败:", err);
+    }
+  };
+
   return (
     <div>
       <h1>任务管理</h1>
@@ -42,6 +52,7 @@ function App() {
         {tasks.map((task) => (
           <li key={task._id}>
             {task.title} - {task.completed ? "已完成" : "未完成"}
+            <button onClick={() => handleDeleteTask(task._id)}>删除</button>
           </li>
         ))}
       </ul>
