@@ -54,5 +54,15 @@ app.post("/api/tasks", async (req, res) => {
   }
 });
 
+app.delete("/api/tasks/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Task.findByIdAndDelete(id);
+    res.status(200).json({ message: "任务删除成功" });
+  } catch (err) {
+    res.status(400).json({ error: "删除任务失败", details: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`服务器运行在端口 ${PORT}`));
