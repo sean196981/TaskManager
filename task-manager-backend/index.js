@@ -1,0 +1,33 @@
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+require("dotenv").config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// 连接 MongoDB（替换为你的 MongoDB URI）
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/task-manager", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB 连接成功"))
+  .catch((err) => console.error("MongoDB 连接失败:", err));
+
+// 定义任务模型
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  completed: { type: Boolean, default: false },
+});
+const Task = mongoose.model("Task", taskSchema);
+
+// API 路由：获取所有任务
+app.get("/api/tasks", async (req, res) => {
+  const tasks = await Task.find();
+  res.json(tasks);
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`服务器运行在端口 ${PORT}`));
