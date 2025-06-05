@@ -42,5 +42,17 @@ app.get("/api/tasks", async (req, res) => {
   res.json(tasks);
 });
 
+// 在 app.get('/api/tasks') 之后添加
+app.post("/api/tasks", async (req, res) => {
+  try {
+    const { title } = req.body;
+    const newTask = new Task({ title });
+    await newTask.save();
+    res.status(201).json(newTask);
+  } catch (err) {
+    res.status(400).json({ error: "添加任务失败", details: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`服务器运行在端口 ${PORT}`));
